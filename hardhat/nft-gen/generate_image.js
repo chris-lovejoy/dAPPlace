@@ -27,11 +27,11 @@ async function main() {
 
   // 1. TODO: listen to an event (ie. the 10,000 index)
   // listen to minting triggered
+  const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
+  const connectedPixelContract = new ethers.Contract(CONTRACT_ADDRESS,     
+        NFTContract_ABI.abi, signer);
 
-
-
-
-
+  connectedPixelContract.on("MintingTriggered", (boolean) => {
 
   // 2. LOAD IMAGE
   // TODO: potentially use Tatum / Graph for this?)
@@ -128,7 +128,7 @@ async function main() {
 
 
   // 6. settle auction
-
+  })
 }
 
 

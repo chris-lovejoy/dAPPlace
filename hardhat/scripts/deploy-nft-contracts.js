@@ -2,10 +2,10 @@ const hre = require("hardhat");
 
 async function main() {
 
-
+let auctionContract= ""
 // We get the contract to deploy
   const dAPPNftContract = await hre.ethers.getContractFactory("DapplaceNFT");
-  const dAPPNft = await dAPPNftContract.deploy();
+  const dAPPNft = await dAPPNftContract.deploy(auctionContract);
 
   await dAPPNft.deployed();
 

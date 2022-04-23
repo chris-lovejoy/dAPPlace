@@ -15,9 +15,11 @@ contract DapplaceNFT is ERC721URIStorage, Ownable {
     Counters.Counter private _tokenId;
 
     string public ipfsUri; 
+    address auctionAddress;
 
-    constructor() ERC721("DapplaceNFT", "DAP"){
+    constructor(address _newAuctionAddress) ERC721("DapplaceNFT", "DAP"){
       _tokenId.increment(); //Initializing NFT Id with != 0
+      auctionAddress = _newAuctionAddress;
     }
 
     modifier callerIsUser() {
@@ -28,6 +30,7 @@ contract DapplaceNFT is ERC721URIStorage, Ownable {
   event newUriSet(string); 
 
   function mintNft(address mintedTo) public {
+    require(msg.sender == auctionAddress, "Caller not Auction contract");
         uint256 currentTokenId = _tokenId.current();
 
         _safeMint(mintedTo, currentTokenId);

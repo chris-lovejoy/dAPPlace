@@ -9,8 +9,10 @@
     "hardhat": "^2.9.3"
   },
   "dependencies": {
+    "dotenv": "^16.0.0",
     "jimp": "^0.16.1",
     "minimist": "^1.2.6",
+    "vue": "^3.2.33",
     "web3.storage": "^4.2.0"
   }
 }

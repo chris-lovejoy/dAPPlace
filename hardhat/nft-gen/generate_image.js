@@ -1,10 +1,13 @@
 const Jimp = require('jimp')
 const { ethers } = require("ethers")
 const ABI = require('../artifacts/contracts/Canvas.sol/Canvas.json')
+const fs = require('fs');
+require('dotenv').config();
+// NOTE: .env file must be in hardhat directory
 
-// const process = require('process')
-// const minimist = require('minimist')
-// const { Web3Storage, getFilesFromPath } = require('web3.storage')
+const process = require('process')
+const minimist = require('minimist')
+const { Web3Storage, getFilesFromPath } = require('web3.storage')
 
 
 const address = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
@@ -24,7 +27,7 @@ async function main() {
   // listen to minting triggered
 
 
-  
+
   // 2. LOAD IMAGE
   // TODO: potentially use Tatum / Graph for this?)
 
@@ -55,6 +58,8 @@ async function main() {
       destArray.push(tempArray);
     }
   })
+
+  // TODO: resolve timing issue when nft.png not yet made
   
 
   // 3. generate a png and save locally
@@ -67,15 +72,54 @@ async function main() {
       });
     });
   
-    image.write('images/test.png', (err) => {
+    image.write('images/nft.png', (err) => {
       if (err) throw err;
     });
   });
 
+  // 4. Send image to IPFS
+  // TODO: consider adding the tatum request
 
-  // 4. send to IPFS
-  // (to do via the tatum request)
+    const path = "./images/nft.png"
+    const token = process.env.WEB3_STORAGE_API_KEY
 
+    console.log("token is", token)
+
+    const storage = new Web3Storage({ token })
+    const files = []  
+
+    pathFiles = await getFilesFromPath(path)
+    files.push(...pathFiles)
+
+    console.log(`Uploading ${files.length} files`)
+    const cid = await storage.put(files)
+    console.log('NFT image added with CID:', cid)
+    
+    // 5. Create JSON metadata for NFT and upload to IPFS
+    image_metadata = `{
+      "name": "dAPPlace NFT collection (dapplace.xyz)",
+      "description": "decentralised collaboration artwork",
+      "image": "https://${cid}.ipfs.dweb.link/nft.png"
+    }`
+
+    fs.writeFile("./images/NFT_metadata.json", image_metadata, function(err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+
+    const json_path = "./images/NFT_metadata.json"
+    const json_storage = new Web3Storage({ token })
+    const json_file = []  
+
+    json_pathFiles = await getFilesFromPath(json_path)
+    json_file.push(...json_pathFiles)
+
+    console.log(`Uploading ${json_file.length} files`)
+    const json_cid = await json_storage.put(json_file)
+    console.log('JSON metadata added with CID:', json_cid)
+
+    json_URI = `https://${json_cid}.ipfs.dweb.link/NFT_metadata.json`
 
 
   // 5. mint the NFT
@@ -87,33 +131,3 @@ async function main() {
 }
 
 main()
-
-
- // TEMPLATE CODE FOR IPFS PUSH TO WEB3 STORAGE 
-    
-  //   async function main () {
-  //     const args = minimist(process.argv.slice(2))
-  //     const token = args.token
-    
-  //     if (!token) {
-  //       return console.error('A token is needed. You can create one on https://web3.storage')
-  //     }
-    
-  //     if (args._.length < 1) {
-  //       return console.error('Please supply the path to a file or directory')
-  //     }
-    
-  //     const storage = new Web3Storage({ token })
-  //     const files = []
-    
-  //     for (const path of args._) {
-  //       const pathFiles = await getFilesFromPath(path)
-  //       files.push(...pathFiles)
-  //     }
-    
-  //     console.log(`Uploading ${files.length} files`)
-  //     const cid = await storage.put(files)
-  //     console.log('Content added with CID:', cid)
-  //   }
-    
-  //   main() 

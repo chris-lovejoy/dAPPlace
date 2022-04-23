@@ -1,6 +1,8 @@
 <script setup>
 import { onMounted, defineProps, ref } from 'vue'
 
+import PPixel from '@/comps/PPixel'
+
 import { Canvas } from '@/contracts'
 import { useEthers } from '@/compose'
 
@@ -31,13 +33,17 @@ const click = async (x, y) => {
 <template>
   <div class="container">
     <div v-for="(_, y) in SIZE" :key="y">
-      <span v-for="(_, x) in SIZE" :key="x" @click="click(x, y)"></span>
+      <PPixel
+        :color="grid[(y * SIZE) + x].val"
+        v-for="(_, x) in SIZE"
+        :key="x"
+        @click="click(x, y)"
+      />
     </div>
   </div>
 </template>
 
 <style>
-
   div.container {
     margin: 0 auto;
     width: 200px;

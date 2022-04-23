@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps, computed } from 'vue'
 
-const TABLE = ['#ddd', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
+const TABLE = ['#ddd', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'white', 'grey', 'black']
 
 const props = defineProps({
   color: { type: Number, required: true }

@@ -22,7 +22,6 @@ const value = computed(() => {
 
 <template>
   <PCanvas :value="value" />
-  <p> Color: {{ color }} </p>
   <PPicker v-model="color" />
 </template>
 
@@ -31,6 +30,16 @@ const value = computed(() => {
     margin: 0;
     font-family: monospace;
     background-color: #fff;
+  }
+
+  .app {
+    width: 200px;
+    height: 250px;
+
+    position: absolute;
+    top: 50%;
+    left:50%;
+    margin: -125px 0 0 -100px;
   }
 
   header {

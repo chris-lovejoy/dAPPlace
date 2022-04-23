@@ -68,6 +68,7 @@ const value = computed(() => {
     text-align: center;
   }
 
+  .color, .color-picker {cursor: pointer;}
   .red .color-picker:hover { background-color: red; opacity:1;}
   .orange .color-picker:hover { background-color: orange; opacity:1;}
   .yellow .color-picker:hover { background-color: yellow; opacity:1;}

@@ -32,11 +32,13 @@ const click = async (x, y) => {
 
 <template>
   <div class="container">
-    <div v-for="(_, y) in SIZE" :key="y">
-      <template v-for="(_, x) in SIZE" :key="x">
-        <PPixel :color="grid[(y * SIZE) + x].val" @click="click(x, y)" />
-      </template>
-    </div>
+    <main>
+      <div class="row" v-for="(_, y) in SIZE" :key="y">
+        <template v-for="(_, x) in SIZE" :key="x">
+          <PPixel :color="grid[(y * SIZE) + x].val" @click="click(x, y)" />
+        </template>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -44,15 +46,19 @@ const click = async (x, y) => {
   div.container {
     margin: 0 auto;
     width: 200px;
+    height: 200px;
+    background: black;
+    /* border: 5px solid #eee;
+    border-radius: 5px; */
   }
 
-  div {
+  div.row {
     height: 20px;
   }
 
   span {
-      width: 20px;
-      height: 20px;
-      display: inline-block;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
   }
 </style>

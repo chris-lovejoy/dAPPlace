@@ -20,6 +20,7 @@ contract ColorPixel is Ownable {
 
   event PixelSet(uint256, uint8);
   event MintingTriggered(bool);
+  event Image();
 
     
     function updatePixel(uint _location, uint8 _color) public callerIsUser {
@@ -31,6 +32,7 @@ contract ColorPixel is Ownable {
         CounterTrigger();
 
         emit PixelSet(_location, _color);
+        emit Image();
     }
 
     function getPixel(uint _location) public view returns(uint pixelColorByLocation, address artistAddress) {

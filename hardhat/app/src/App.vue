@@ -7,14 +7,17 @@ import PPicker from '@/comps/PPicker'
 const color = ref('green')
 const value = computed(() => {
   const TABLE = {
-    white: 0,
+    transparent: 0,
     red: 1,
     orange: 2,
     yellow: 3,
     green: 4,
     blue: 5,
     indigo: 6,
-    violet: 7
+    violet: 7,
+    white: 8,
+    grey: 9,
+    black: 10
   }
   return TABLE[color.value]
 })

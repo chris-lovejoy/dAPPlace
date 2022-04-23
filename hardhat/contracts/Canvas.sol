@@ -18,8 +18,7 @@ contract Canvas {
         _changes[i] = Change({ val: v, acc: msg.sender });
         emit Set(x, y, v);
 
-        _counter += 1;
-        _counter = _counter % 100;
+        _counter = (_counter + 1) % 100;
 
         if (_counter == 0)
             emit Image();
@@ -34,7 +33,7 @@ contract Canvas {
         return _changes;
     }
 
-    function remaining () public view return (uint8) {
+    function remaining () public view returns (uint8) {
         return 100 - _counter;
     }
 }

@@ -13,6 +13,11 @@ jobs:
           node-version: 16
 
       - run: npm ci
+        working-directory: ./hardhat/
+      - run: npx hardhat compile
+        working-directory: ./hardhat/
+
+      - run: npm ci
         working-directory: ./hardhat/app/
       - run: npm run lint
         working-directory: ./hardhat/app/

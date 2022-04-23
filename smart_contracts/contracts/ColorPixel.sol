@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract ColorPixel is Ownable {
     
     uint256 changeCounter; 
-    uint256 changes; 
+    uint256 changesThreshold; 
 
     uint8[100] _pixels;
     mapping(uint => uint8) public _pixelColor;
@@ -28,6 +28,7 @@ contract ColorPixel is Ownable {
         _artist[_location] = msg.sender;
 
         changeCounter += 1; 
+        CounterTrigger();
 
         emit PixelSet(_location, _color);
     }
@@ -41,16 +42,16 @@ contract ColorPixel is Ownable {
         return _pixels;
     }
 
-    function setChanges(uint256 _newChanges) public onlyOwner {
-        changes = _newChanges;
-    }
-
-    function changeCounterTrigger() external returns(bool) {
-        if (changeCounter % changes == 0){
+    function CounterTrigger() internal returns(bool) {
+        if (changeCounter % changesThreshold == 0){
             emit MintingTriggered(true);
             return true;
         } else
         return false;
+    }
+
+    function setChangesThreshold (uint256 _newThreshold) external onlyOwner {
+        changesThreshold = _newThreshold;
     }
 
 

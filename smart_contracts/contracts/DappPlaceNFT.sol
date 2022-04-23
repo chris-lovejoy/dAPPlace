@@ -8,12 +8,13 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-import "./libraries/Base64.sol";
 
 contract DapplaceNFT is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenId;
+
+    string public ipfsUri; 
 
     constructor() ERC721("DapplaceNFT", "DAP"){
       _tokenId.increment(); //Initializing NFT Id with != 0
@@ -24,27 +25,24 @@ contract DapplaceNFT is ERC721URIStorage, Ownable {
     _;
   }
 
-  struct nftData {
-    string colour;
-    string imageURI;
-    uint256 Xcoordinate;
-    uint256 Ycoordinate;
-  }
+  event newUriSet(string); 
 
-  mapping(uint256 => nftData) public tokenToData; 
-
-  function mintNft(address mintedTo, string memory ipfsUrl) public {
+  function mintNft(address mintedTo) public {
         uint256 currentTokenId = _tokenId.current();
 
         _safeMint(mintedTo, currentTokenId);
 
         // Set the NFTs data.
-        _setTokenURI(currentTokenId, ipfsUrl);
+        _setTokenURI(currentTokenId, ipfsUri);
 
         _tokenId.increment();
     }
-  function tokenId() view external returns(uint256){
+  function setIpfsUri(string memory _newUri) external onlyOwner{
+    ipfsUri = _newUri;
+    emit newUriSet(_newUri);
+  }
 
+  function tokenId() public view returns(uint256){
     return _tokenId.current();
   }
 

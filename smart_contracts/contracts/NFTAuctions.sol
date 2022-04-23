@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.8.6;
+pragma solidity ^0.8.0;
 
 import { Pausable } from '@openzeppelin/contracts/security/Pausable.sol';
 import { ReentrancyGuard } from '@openzeppelin/contracts/security/ReentrancyGuard.sol';
@@ -52,7 +52,6 @@ contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
         minBidIncrementPercentage = _minBidIncrementPercentage;
         projectAddress = _projectAddress;
     }
-        
 
     /**
      * @notice Settle the current auction, mint a new Noun, and put it up for auction.
@@ -90,6 +89,15 @@ contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
         auction.bidder = payable(msg.sender);
 
     }
+
+    function getNextBidPrice() external view returns(uint256){
+        Auction memory _auction = auction;
+        if (auction.amount < reservePrice){
+            return reservePrice;
+        } else {
+            return _auction.amount + ((_auction.amount * minBidIncrementPercentage) / 100);  
+            }
+        }
 
     /**
      * @notice Pause the auction house.

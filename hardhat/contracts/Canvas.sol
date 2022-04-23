@@ -10,7 +10,7 @@ contract Canvas {
         address acc;
     }
 
-    uint8 public counter;
+    uint8 public _counter;
     Change[100] _changes;
 
     function set (uint8 x, uint8 y, uint8 v) public {
@@ -18,10 +18,10 @@ contract Canvas {
         _changes[i] = Change({ val: v, acc: msg.sender });
         emit Set(x, y, v);
 
-        counter += 1;
-        counter = counter % 100;
+        _counter += 1;
+        _counter = _counter % 100;
 
-        if (counter == 0)
+        if (_counter == 0)
             emit Image();
     }
 
@@ -32,5 +32,9 @@ contract Canvas {
 
     function pixels () public view returns (Change[100] memory) {
         return _changes;
+    }
+
+    function remaining () public view return (uint8) {
+        return 100 - _counter;
     }
 }

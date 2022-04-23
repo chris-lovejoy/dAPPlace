@@ -29,11 +29,27 @@ const click = async (x, y) => {
 </script>
 
 <template>
-<div>
-  <div v-for="(_, y) in SIZE" :key="y">
-    <span v-for="(_, x) in SIZE" :key="x" @click="click(x, y)">
-      {{ grid[(y * SIZE) + x].val }}
-    </span>
+  <div class="container">
+    <div v-for="(_, y) in SIZE" :key="y">
+      <span v-for="(_, x) in SIZE" :key="x" @click="click(x, y)"></span>
+    </div>
   </div>
-</div>
 </template>
+
+<style>
+
+  div.container {
+    margin: 0 auto;
+    width: 200px;
+  }
+
+  div {
+    height: 20px;
+  }
+
+  span {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+  }
+</style>

@@ -1,9 +1,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-import CanvasComp from '@/comps/CanvasComp'
-import ColorPicker from '@/comps/ColorPicker'
-// import CounterComp from '@/comps/CounterComp'
+import PCanvas from '@/comps/PCanvas'
+import PPicker from '@/comps/PPicker'
 
 const color = ref('green')
 const value = computed(() => {
@@ -22,14 +21,14 @@ const value = computed(() => {
 </script>
 
 <template>
-  <!-- <CounterComp /> -->
   <header>
-    Logo
-    <button>Connect</button>
+    Logo <button>Connect</button>
   </header>
-  <CanvasComp :value="value" />
+
+  <PCanvas :value="value" />
+
   <p> Color: {{ color }} </p>
-  <ColorPicker v-model="color" />
+  <PPicker v-model="color" />
 </template>
 
 <style>

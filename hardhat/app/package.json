@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@web3auth/web3auth": "^0.9.3",
     "core-js": "^3.8.3",
     "ethers": "^5.6.4",
     "vue": "^3.2.13"

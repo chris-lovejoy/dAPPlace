@@ -19,7 +19,7 @@ contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
     uint8 public minBidIncrementPercentage;
 
     //Projects wallet Address
-    address public projectAddress;
+    address public projectAddress = 0x93258FCaA2ff8D43821951e38aEfc273F700a9eF;
 
     // The active auction
     struct Auction {

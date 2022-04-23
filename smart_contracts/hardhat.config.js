@@ -1,23 +1,22 @@
 require("@nomiclabs/hardhat-waffle");
 require('dotenv').config()
 require("@nomiclabs/hardhat-etherscan");
-require ("@nomiclabs/hardhat-truffle5");
 require("@eth-optimism/hardhat-ovm")
 
 module.exports = {
   solidity: "0.8.6",
   networks: {
     rinkeby: {
-      url: process.env.ALCHEMY_KEY_RINKEBY,
+      url: process.env.RINKEBY_ALCHEMY_KEY,
       accounts: [process.env.PRIVATE_KEY],
     },
     polygonMumbai: {
       url: process.env.POLYGON_TESTNET_KEY,
-      accounts: [process.env.PICTOS_PRIVATE_KEY],
+      accounts: [process.env.PRIVATE_KEY],
     },
     optimismKovan: {
       url: process.env.POLYGON_TESTNET_KEY,
-      accounts: [process.env.PICTOS_PRIVATE_KEY],
+      accounts: [process.env.PRIVATE_KEY],
     },
   },
   etherscan: {

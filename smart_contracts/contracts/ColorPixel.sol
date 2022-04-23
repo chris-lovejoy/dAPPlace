@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract ColorPixel is Ownable {
     
     uint256 changeCounter; 
-    uint256 changesThreshold; 
+    uint256 changesThreshold = 100; 
 
     uint8[100] _pixels;
     mapping(uint => uint8) public _pixelColor;
@@ -38,7 +38,7 @@ contract ColorPixel is Ownable {
         artistAddress =  _artist[_location]; 
     }
 
-    function viewPixelsArray () public view returns (uint8[100] memory) {
+    function viewPixelsArray() public view returns (uint8[100] memory) {
         return _pixels;
     }
 

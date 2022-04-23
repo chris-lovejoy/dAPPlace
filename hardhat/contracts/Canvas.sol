@@ -29,7 +29,7 @@ contract Canvas {
         return _changes[i];
     }
 
-    function pixels () public view returns (Change[100] memory) {
+    function pixels() public view returns (Change[100] memory) {
         return _changes;
     }
 

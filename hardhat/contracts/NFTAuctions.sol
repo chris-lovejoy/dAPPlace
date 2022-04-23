@@ -47,10 +47,9 @@ contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
      * populate configuration values, and pause the contract.
      * @dev This function can only be called once.
      */
-    constructor(uint256 _reservePrice, uint8 _minBidIncrementPercentage, address _projectAddress){
+    constructor(uint256 _reservePrice, uint8 _minBidIncrementPercentage){
         reservePrice = _reservePrice;
         minBidIncrementPercentage = _minBidIncrementPercentage;
-        projectAddress = _projectAddress;
     }
 
     /**

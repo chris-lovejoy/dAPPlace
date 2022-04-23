@@ -19,7 +19,7 @@ export const Counter = new ethers.Contract(
 )
 
 export const Canvas = new ethers.Contract(
-  '0xc0FC2e45e3165a9758bcee23Ec54315f023Cd054',
+  '0xbF7722a9b3C27143C40d6a6e0089C78ddda4D82A',
   CanvasABI.abi,
   provider
 )

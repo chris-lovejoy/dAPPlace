@@ -10,7 +10,12 @@ const ethers = useEthers()
 const signer = ethers.getSigner()
 const canvas = Canvas.connect(signer)
 
-const grid = ref([])
+const placeholder = []
+for (let i = 0; i < 100; i++) {
+  placeholder.push({ val: 0, acc: 0 })
+}
+
+const grid = ref(placeholder)
 const updateGrid = async () => (grid.value = await Canvas.pixels())
 onMounted(updateGrid)
 
@@ -26,9 +31,10 @@ const click = async (x, y) => {
 
 <template>
 <div>
+  <input name="">
   <div v-for="(_, y) in SIZE" :key="y">
     <span v-for="(_, x) in SIZE" :key="x" @click="click(x, y)">
-      {{ grid[(y * SIZE) + x] }}
+      {{ grid[(y * SIZE) + x].val }}
     </span>
   </div>
 </div>

@@ -31,7 +31,7 @@ async function main() {
   const connectedPixelContract = new ethers.Contract(CONTRACT_ADDRESS,     
         NFTContract_ABI.abi, signer);
 
-  connectedPixelContract.on("MintingTriggered", (boolean) => {
+  connectedPixelContract.on("Image", () => {
 
   // 2. LOAD IMAGE
   // TODO: potentially use Tatum / Graph for this?)

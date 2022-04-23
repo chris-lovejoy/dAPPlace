@@ -16,10 +16,14 @@ const real = computed(() => TABLE[props.color])
 
 <style scoped>
 
-  span {
+  .color-picker {
     width: 20px;
     height: 20px;
     display: inline-block;
     background-color: v-bind(real);
+  }
+
+  .color-picker:hover {
+    opacity: 0.75;
   }
 </style>

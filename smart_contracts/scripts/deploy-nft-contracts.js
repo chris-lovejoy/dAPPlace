@@ -9,7 +9,7 @@ async function main() {
 
   await dAPPNft.deployed();
 
-  console.log("dAPPNft deployed to:", ColorPixel.address);
+  console.log("dAPPNft deployed to:", dAPPNft.address);
 }
 
 

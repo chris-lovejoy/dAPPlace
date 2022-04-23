@@ -18,3 +18,8 @@ and will start a Vue application that interacts with the node. You must
 import one of the accounts from the docker container to metamask to test
 stuff around.
 
+
+## nft-gen
+node nft-gen/generate image
+node nft-gen/image-to-ipfs --token=<web3 storage token> images/test.png
+

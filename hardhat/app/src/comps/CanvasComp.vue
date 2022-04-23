@@ -33,12 +33,9 @@ const click = async (x, y) => {
 <template>
   <div class="container">
     <div v-for="(_, y) in SIZE" :key="y">
-      <PPixel
-        :color="grid[(y * SIZE) + x].val"
-        v-for="(_, x) in SIZE"
-        :key="x"
-        @click="click(x, y)"
-      />
+      <template v-for="(_, x) in SIZE" :key="x">
+        <PPixel :color="grid[(y * SIZE) + x].val" @click="click(x, y)" />
+      </template>
     </div>
   </div>
 </template>

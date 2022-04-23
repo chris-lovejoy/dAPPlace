@@ -24,6 +24,7 @@ async function main() {
   // listen to minting triggered
 
 
+  
   // 2. LOAD IMAGE
   // TODO: potentially use Tatum / Graph for this?)
 
@@ -40,44 +41,36 @@ async function main() {
 
   pixel_array.forEach((item, i) => {
     if (i === 0) {
-      tempArray.push(TABLE[item.val]);
+      tempArray.push(Jimp.cssColorToHex(TABLE[item.val]));
       
     } else if (i % 10 === 0) {
       destArray.push(tempArray);
       tempArray = [];
-      tempArray.push(TABLE[item.val]);
+      tempArray.push(Jimp.cssColorToHex(TABLE[item.val]));
     } else {
-    tempArray.push(TABLE[item.val]);
+    tempArray.push(Jimp.cssColorToHex(TABLE[item.val]));
     }
     
     if (i === pixel_array.length - 1) {
       destArray.push(tempArray);
     }
   })
-
-  console.log(destArray);
-
-  // TODO: add css to hex 
-  // Jimp.cssColorToHex(cssColor); // e.g. converts #FF00FF to 0xFF00FFFF
-
   
 
-  // 3. generate a png
-
-    
-//   let image = new Jimp(10, 10, function (err, image) {
-//     if (err) throw err;
+  // 3. generate a png and save locally
+  let image = new Jimp(10, 10, function (err, image) {
+    if (err) throw err;
   
-//     imageData.forEach((row, y) => {
-//       row.forEach((color, x) => {
-//         image.setPixelColor(color, x, y);
-//       });
-//     });
+    destArray.forEach((row, y) => {
+      row.forEach((color, x) => {
+        image.setPixelColor(color, x, y);
+      });
+    });
   
-//     image.write('images/test.png', (err) => {
-//       if (err) throw err;
-//     });
-//   });
+    image.write('images/test.png', (err) => {
+      if (err) throw err;
+    });
+  });
 
 
   // 4. send to IPFS

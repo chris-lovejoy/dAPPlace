@@ -1,6 +1,7 @@
 const Jimp = require('jimp')
-const { ethers } = require("ethers")
+const { ethers, Contract } = require("ethers")
 const ABI = require('../artifacts/contracts/Canvas.sol/Canvas.json')
+// const NFT_ABI = require('../../smart_contracts/artifacts...')
 const fs = require('fs');
 require('dotenv').config();
 // NOTE: .env file must be in hardhat directory
@@ -10,8 +11,9 @@ const minimist = require('minimist')
 const { Web3Storage, getFilesFromPath } = require('web3.storage')
 
 
-const address = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
-// to change to contract address deployment
+const canvas_address = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+// to update to contract address deployment (based on node)
+
 
 
 const TABLE = ['#dddddd', '#ff0000', '#ffA500', '#ffff00', '#008000', '#0000ff', '#4b0082', '#ffa500', '#ffffff', '#808080', '#000000']
@@ -28,11 +30,14 @@ async function main() {
 
 
 
+
+
+
   // 2. LOAD IMAGE
   // TODO: potentially use Tatum / Graph for this?)
 
   const CanvasContract = new ethers.Contract(
-    address,
+    canvas_address,
     ABI.abi,
     provider
   )
@@ -57,25 +62,19 @@ async function main() {
     if (i === pixel_array.length - 1) {
       destArray.push(tempArray);
     }
-  })
-
-  // TODO: resolve timing issue when nft.png not yet made
-  
+  })  
 
   // 3. generate a png and save locally
-  let image = new Jimp(10, 10, function (err, image) {
-    if (err) throw err;
-  
+    let image = new Jimp(10, 10)
+
     destArray.forEach((row, y) => {
       row.forEach((color, x) => {
         image.setPixelColor(color, x, y);
       });
     });
-  
-    image.write('images/nft.png', (err) => {
-      if (err) throw err;
-    });
-  });
+
+    await image.writeAsync('images/nft.png')
+
 
   // 4. Send image to IPFS
   // TODO: consider adding the tatum request
@@ -91,7 +90,7 @@ async function main() {
     pathFiles = await getFilesFromPath(path)
     files.push(...pathFiles)
 
-    console.log(`Uploading ${files.length} files`)
+    console.log(`Uploading ${files.length} NFT images`)
     const cid = await storage.put(files)
     console.log('NFT image added with CID:', cid)
     
@@ -115,12 +114,14 @@ async function main() {
     json_pathFiles = await getFilesFromPath(json_path)
     json_file.push(...json_pathFiles)
 
-    console.log(`Uploading ${json_file.length} files`)
+    console.log(`Uploading ${json_file.length} JSON files`)
     const json_cid = await json_storage.put(json_file)
     console.log('JSON metadata added with CID:', json_cid)
 
     json_URI = `https://${json_cid}.ipfs.dweb.link/NFT_metadata.json`
 
+
+    
 
   // 5. mint the NFT
 
@@ -129,5 +130,6 @@ async function main() {
   // 6. settle auction
 
 }
+
 
 main()

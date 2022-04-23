@@ -1,6 +1,8 @@
 <script setup>
 import { onMounted, defineProps, ref } from 'vue'
 
+import { useIntervalFn } from '@vueuse/core'
+
 import PPixel from '@/comps/PPixel'
 
 import { Canvas } from '@/contracts'
@@ -22,6 +24,7 @@ for (let i = 0; i < 100; i++) {
 const grid = ref(placeholder)
 const updateGrid = async () => (grid.value = await Canvas.pixels())
 onMounted(updateGrid)
+useIntervalFn(updateGrid, 1000)
 
 const click = async (x, y) => {
   const tx = await canvas.set(x, y, props.value)

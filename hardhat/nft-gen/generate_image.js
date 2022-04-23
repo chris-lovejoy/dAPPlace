@@ -1,6 +1,6 @@
 const Jimp = require('jimp')
 const { ethers, Contract } = require("ethers")
-const ABI = require('../artifacts/contracts/ColorPixel.sol/ColorPixel.json')
+const ABI = require('../artifacts/contracts/Canvas.sol/Canvas.json')
 // const NFT_ABI = require('../../smart_contracts/artifacts...')
 const fs = require('fs');
 require('dotenv').config();

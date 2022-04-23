@@ -4,12 +4,12 @@ async function main() {
 
 
 // We get the contract to deploy
-  const ColorPixelContract = await hre.ethers.getContractFactory("ColorPixel");
-  const ColorPixel = await ColorPixelContract.deploy();
+  const CanvasContract = await hre.ethers.getContractFactory("Canvas");
+  const Canvas = await CanvasContract.deploy();
 
-  await ColorPixel.deployed();
+  await Canvas.deployed();
 
-  console.log("ColorPixel deployed to:", ColorPixel.address);
+  console.log("Canvas deployed to:", Canvas.address);
 }
 
 

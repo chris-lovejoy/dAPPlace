@@ -11,7 +11,7 @@ const minimist = require('minimist')
 const { Web3Storage, getFilesFromPath } = require('web3.storage')
 
 
-const canvas_address = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+const canvas_address = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
 // to update to contract address deployment (based on node)
 
 const TABLE = ['#dddddd', '#ff0000', '#ffA500', '#ffff00', '#008000', '#0000ff', '#4b0082', '#ffa500', '#ffffff', '#808080', '#000000']
@@ -26,17 +26,17 @@ async function main() {
   // 1. TODO: listen to an event (ie. the 10,000 index)
   // listen to minting triggered
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
-  const connectedPixelContract = new ethers.Contract(canvas_address,     
+  const connectedCanvas = new ethers.Contract(canvas_address,     
         CANVAS_ABI.abi, signer);
 
-  connectedPixelContract.on("Image", () => {
+    // connectedCanvas.on("Image", async () => {
 
   // 2. LOAD IMAGE
   // TODO: potentially use Tatum / Graph for this?)
 
   const CanvasContract = new ethers.Contract(
     canvas_address,
-    ABI.abi,
+    CANVAS_ABI.abi,
     provider
   )
 
@@ -126,7 +126,7 @@ async function main() {
 
 
   // 6. settle auction
-  })
+  // })
 }
 
 

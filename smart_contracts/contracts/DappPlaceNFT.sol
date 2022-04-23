@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
 
-
-
 pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
@@ -35,17 +33,13 @@ contract DapplaceNFT is ERC721URIStorage, Ownable {
 
   mapping(uint256 => nftData) public tokenToData; 
 
-  function mintNft(address mintedTo) public {
+  function mintNft(address mintedTo, string memory ipfsUrl) public {
         uint256 currentTokenId = _tokenId.current();
 
         _safeMint(mintedTo, currentTokenId);
 
-        tokenToData[currentTokenId] = nftData({
-          colour: "#ddqwjkqdw",
-          imageURI: "sjjw",
-          Xcoordinate: 34,
-          Ycoordinate: 34
-        });
+        // Set the NFTs data.
+        _setTokenURI(currentTokenId, ipfsUrl);
 
         _tokenId.increment();
     }

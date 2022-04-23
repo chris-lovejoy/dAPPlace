@@ -5,29 +5,18 @@ pragma solidity ^0.8.6;
 import { Pausable } from '@openzeppelin/contracts/security/Pausable.sol';
 import { ReentrancyGuard } from '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
-import { IERC20 } from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "./DappPlaceNFT.sol";
 
 
 contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
 
-    using Counters for Counters.Counter;
-
-    Counters.Counter private _tokenId;
     DapplaceNFT public nft;
-
-    // The minimum amount of time left in an auction after a new bid is created
-    uint256 public timeBuffer;
 
     // The minimum price accepted in an auction
     uint256 public reservePrice;
 
     // The minimum percentage difference between the last bid amount and the current bid
     uint8 public minBidIncrementPercentage;
-
-    // The duration of a single auction
-    uint256 public duration;
 
     //Projects wallet Address
     address public projectAddress;

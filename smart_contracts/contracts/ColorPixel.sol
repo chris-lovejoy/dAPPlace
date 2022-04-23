@@ -9,8 +9,8 @@ contract ColorPixel is Ownable {
     uint256 changeCounter; 
     uint256 changes; 
 
-    string[100] _pixels;
-    mapping(uint => string) public _pixelColor;
+    uint8[100] _pixels;
+    mapping(uint => uint8) public _pixelColor;
     mapping(uint => address) public _artist;
 
     modifier callerIsUser() {
@@ -18,11 +18,11 @@ contract ColorPixel is Ownable {
     _;
   }
 
-  event PixelSet(uint256, string);
+  event PixelSet(uint256, uint8);
   event MintingTriggered(bool);
 
     
-    function updatePixel(uint _location, string memory _color) public callerIsUser {
+    function updatePixel(uint _location, uint8 _color) public callerIsUser {
         _pixels[_location] = _color;
         _pixelColor[_location] = _color;
         _artist[_location] = msg.sender;
@@ -32,12 +32,12 @@ contract ColorPixel is Ownable {
         emit PixelSet(_location, _color);
     }
 
-    function getPixel(uint _location) public view returns(string memory pixelColorByLocation, address artistAddress) {
+    function getPixel(uint _location) public view returns(uint pixelColorByLocation, address artistAddress) {
         pixelColorByLocation = _pixelColor[_location];
         artistAddress =  _artist[_location]; 
     }
 
-    function viewPixelsArray () public view returns (string[100] memory) {
+    function viewPixelsArray () public view returns (uint8[100] memory) {
         return _pixels;
     }
 

@@ -21,10 +21,14 @@ const value = computed(() => {
 </script>
 
 <template>
-  <div :class="{[color]: true}">
-    <PCanvas :value="value" />
-    <PPicker v-model="color" />
+  <div class="next-mint-countdown">[X] pixels until next mint</div>
+  <div class="wrapper">
+    <div :class="{[color]: true}">
+      <PCanvas :value="value" />
+      <PPicker v-model="color" />
+    </div>
   </div>
+  <div class="smart-contract-address">Contract address: <a target="_blank" href="https://mumbai.polygonscan.com/address/0xAAc0a62E090145330fce78771d699999Fa64654D">0xAAc0a62E090145330fce78771d699999Fa64654D</a></div>
 </template>
 
 <style>
@@ -34,7 +38,20 @@ const value = computed(() => {
     background-color: #fff;
   }
 
-  .app {
+  .next-mint-countdown {
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  .smart-contract-address {
+    text-align: center;
+    margin-top: 12px;
+    position: absolute;
+    bottom: 16px;
+    width: 100%;
+  }
+
+  .wrapper {
     width: 200px;
     height: 250px;
 

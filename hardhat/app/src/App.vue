@@ -21,8 +21,10 @@ const value = computed(() => {
 </script>
 
 <template>
-  <PCanvas :value="value" />
-  <PPicker v-model="color" />
+  <div :class="{[color]: true}">
+    <PCanvas :value="value" />
+    <PPicker v-model="color" />
+  </div>
 </template>
 
 <style>
@@ -65,4 +67,15 @@ const value = computed(() => {
     margin-top: 20px;
     text-align: center;
   }
+
+  .red .color-picker:hover { background-color: red; opacity:1;}
+  .orange .color-picker:hover { background-color: orange; opacity:1;}
+  .yellow .color-picker:hover { background-color: yellow; opacity:1;}
+  .green .color-picker:hover { background-color: green; opacity:1;}
+  .blue .color-picker:hover { background-color: blue; opacity:1;}
+  .indigo .color-picker:hover { background-color: indigo; opacity:1;}
+  .violet .color-picker:hover { background-color: violet; opacity:1;}
+  .white .color-picker:hover { background-color: white; opacity:1;}
+  .grey .color-picker:hover { background-color: grey; opacity:1;}
+  .black .color-picker:hover { background-color: black; opacity:1;}
 </style>

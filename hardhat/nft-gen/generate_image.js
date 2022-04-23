@@ -1,7 +1,7 @@
 const Jimp = require('jimp')
 const { ethers, Contract } = require("ethers")
-const ABI = require('../artifacts/contracts/Canvas.sol/Canvas.json')
-// const NFT_ABI = require('../../smart_contracts/artifacts...')
+const CANVAS_ABI = require('../artifacts/contracts/Canvas.sol/Canvas.json')
+const NFT_ABI = require('../artifacts/contracts/DappPlaceNFT.sol/DapplaceNFT.json')
 const fs = require('fs');
 require('dotenv').config();
 // NOTE: .env file must be in hardhat directory
@@ -13,8 +13,6 @@ const { Web3Storage, getFilesFromPath } = require('web3.storage')
 
 const canvas_address = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
 // to update to contract address deployment (based on node)
-
-
 
 const TABLE = ['#dddddd', '#ff0000', '#ffA500', '#ffff00', '#008000', '#0000ff', '#4b0082', '#ffa500', '#ffffff', '#808080', '#000000']
 
@@ -28,8 +26,8 @@ async function main() {
   // 1. TODO: listen to an event (ie. the 10,000 index)
   // listen to minting triggered
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
-  const connectedPixelContract = new ethers.Contract(CONTRACT_ADDRESS,     
-        NFTContract_ABI.abi, signer);
+  const connectedPixelContract = new ethers.Contract(canvas_address,     
+        CANVAS_ABI.abi, signer);
 
   connectedPixelContract.on("Image", () => {
 

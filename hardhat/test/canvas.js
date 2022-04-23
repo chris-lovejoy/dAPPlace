@@ -15,13 +15,13 @@ describe('Canvas', () => {
     expect(get2.val).to.equal(2)
   })
 
-  it('Should emit Set', async () => {
+  it('Should emit Pixel', async () => {
     const Canvas = await ethers.getContractFactory('Canvas')
     const canvas = await Canvas.deploy()
     await canvas.deployed()
 
     const set = await canvas.set(1, 1, 2)
-    await expect(set).to.emit(canvas, 'Set')
+    await expect(set).to.emit(canvas, 'Pixel')
   })
 
   it('Should emit Image', async () => {

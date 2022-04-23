@@ -21,9 +21,6 @@ const value = computed(() => {
 </script>
 
 <template>
-  <header>
-    Logo <button>Connect</button>
-  </header>
 
   <PCanvas :value="value" />
 
@@ -34,13 +31,25 @@ const value = computed(() => {
 <style>
   body {
     margin: 0;
+    font-family: monospace;
   }
 
   header {
     display:flex;
     justify-content: space-between;
     background: rgb(59 130 246);
-    padding: 10px;
+    padding: 15px 15px 15px 15px;
     margin-bottom: 30px;
+    color: #fff;
+    font-size: 16px;
+    align-items: center;
+  }
+
+  button {
+    color: rgb(59 130 246);
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 8px;
   }
 </style>

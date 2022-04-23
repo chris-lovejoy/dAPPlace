@@ -10,7 +10,7 @@ contract Canvas {
         address acc;
     }
 
-    uint counter;
+    uint8 public counter;
     Change[100] _changes;
 
     function set (uint8 x, uint8 y, uint8 v) public {

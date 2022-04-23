@@ -16,6 +16,8 @@ jobs:
         working-directory: ./hardhat/
       - run: npx hardhat compile
         working-directory: ./hardhat/
+      - run: npx hardhat test
+        working-directory: ./hardhat/
 
       - run: npm ci
         working-directory: ./hardhat/app/

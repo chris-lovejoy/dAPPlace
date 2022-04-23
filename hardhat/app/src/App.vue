@@ -21,9 +21,7 @@ const value = computed(() => {
 </script>
 
 <template>
-
   <PCanvas :value="value" />
-
   <p> Color: {{ color }} </p>
   <PPicker v-model="color" />
 </template>
@@ -32,6 +30,7 @@ const value = computed(() => {
   body {
     margin: 0;
     font-family: monospace;
+    background-color: #fff;
   }
 
   header {
@@ -51,5 +50,10 @@ const value = computed(() => {
     border: none;
     border-radius: 5px;
     padding: 6px 8px;
+  }
+
+  .selected-color {
+    margin-top: 20px;
+    text-align: center;
   }
 </style>

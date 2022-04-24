@@ -1,5 +1,9 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { onMounted, ref, computed } from 'vue'
+
+import { useIntervalFn } from '@vueuse/core'
+
+import { Canvas } from '@/contracts'
 
 import PCanvas from '@/comps/PCanvas'
 import PPicker from '@/comps/PPicker'
@@ -21,10 +25,16 @@ const value = computed(() => {
   }
   return TABLE[color.value]
 })
+
+const count = ref('..')
+const nextMintCount = async () => (count.value = await Canvas.remaining())
+onMounted(nextMintCount)
+useIntervalFn(nextMintCount, 1000)
+
 </script>
 
 <template>
-  <div class="next-mint-countdown">[X] pixels until next mint</div>
+  <div class="next-mint-countdown">{{count}} pixels until next mint</div>
   <div class="wrapper">
     <div :class="{[color]: true}">
       <PCanvas :value="value" />

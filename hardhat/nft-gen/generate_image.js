@@ -11,8 +11,10 @@ const minimist = require('minimist')
 const { Web3Storage, getFilesFromPath } = require('web3.storage')
 
 
+// to update to addresses based on contract deployment
 const canvas_address = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
-// to update to contract address deployment (based on node)
+const NFT_contract_address = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+
 
 const TABLE = ['#dddddd', '#ff0000', '#ffA500', '#ffff00', '#008000', '#0000ff', '#4b0082', '#ffa500', '#ffffff', '#808080', '#000000']
 
@@ -21,15 +23,16 @@ async function main() {
 
   const provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545') //'https://localhost:8545')
   // const provider =  new ethers.providers.JsonRpcProvider('https://eth-rinkeby.alchemyapi.io/v2/cx7UBVYb9gv8JUNChwO8ERbDzANrorsy');
+  // TODO: move provider link into environmental variable
 
-
-  // 1. TODO: listen to an event (ie. the 10,000 index)
-  // listen to minting triggered
+  // 1. Listen to event (ie. every 100 changes) and trigger all
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
-  const connectedCanvas = new ethers.Contract(canvas_address,     
-        CANVAS_ABI.abi, signer);
+  const connectedCanvas = new ethers.Contract(
+    canvas_address,     
+    CANVAS_ABI.abi, 
+    signer);
 
-    // connectedCanvas.on("Image", async () => {
+  connectedCanvas.on("Image", async () => {
 
   // 2. LOAD IMAGE
   // TODO: potentially use Tatum / Graph for this?)
@@ -41,6 +44,8 @@ async function main() {
   )
 
   const pixel_array = await CanvasContract.pixels()
+
+  console.log('pixels loaded')
 
   destArray = []
   tempArray = []
@@ -62,6 +67,8 @@ async function main() {
     }
   })  
 
+  console.log('generating image')
+
   // 3. generate a png and save locally
     let image = new Jimp(10, 10)
 
@@ -76,6 +83,8 @@ async function main() {
 
   // 4. Send image to IPFS
   // TODO: consider adding the tatum request
+
+    console.log('sending to IPFS')
 
     const path = "./images/nft.png"
     const token = process.env.WEB3_STORAGE_API_KEY
@@ -119,14 +128,19 @@ async function main() {
     json_URI = `https://${json_cid}.ipfs.dweb.link/NFT_metadata.json`
 
 
+  // 6. modify NFT image address
+  const NFT_Contract = new ethers.Contract(
+    NFT_contract_address,     
+    NFT_ABI.abi, 
+    signer);
+
+    console.log("changing the IPFS URI...")
+
+    // NFT_Contract.setIpfsUri(json_URI, {gasLimit:1000000, gasPrice:100000000000})
     
 
-  // 5. mint the NFT
-
-
-
   // 6. settle auction
-  // })
+  })
 }
 
 

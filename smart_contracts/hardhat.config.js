@@ -7,7 +7,7 @@ module.exports = {
   solidity: "0.8.6",
   networks: {
     rinkeby: {
-      url: process.env.RINKEBY_ALCHEMY_KEY,
+      url: process.env.a,
       accounts: [process.env.PRIVATE_KEY],
     },
     polygonMumbai: {

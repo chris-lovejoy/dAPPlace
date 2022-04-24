@@ -1,163 +1,106 @@
-const Jimp = require('jimp')
-const { ethers, Contract } = require("ethers")
-const CANVAS_ABI = require('../artifacts/contracts/Canvas.sol/Canvas.json')
-const NFT_ABI = require('../artifacts/contracts/DappPlaceNFT.sol/DapplaceNFT.json')
-const AUCTION_ABI = require('../artifacts/contracts/NFTAuctions.sol/dAPPplaceHouse.json')
 const fs = require('fs');
-require('dotenv').config();
-// NOTE: .env file must be in hardhat directory
 
-const process = require('process')
-const minimist = require('minimist')
+const Jimp = require('jimp')
+const axios = require('axios')
+const { ethers, Contract } = require("ethers")
+require('dotenv').config();
 const { Web3Storage, getFilesFromPath } = require('web3.storage')
 
-
 // to update to addresses based on contract deployment
-const canvas_address = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"
-const NFT_contract_address = "0x0165878A594ca255338adfa4d48449f69242Eb8F"
-const auction_address = "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"
+const CANVAS_ABI = require('../artifacts/contracts/Canvas.sol/Canvas.json')
+const CANVAS_ADDR = "0x80F9313b8539D263B24e463Fa51634cbF5B436f4"
+const erc721_address = "0x26b19ab85180874e118cf949bac3a801cc574b3c"
 
-const TABLE = ['#dddddd', '#ff0000', '#ffA500', '#ffff00', '#008000', '#0000ff', '#4b0082', '#ffa500', '#ffffff', '#808080', '#000000']
+const TABLE = [
+    '#dddddd',
+    '#ff0000',
+    '#ffA500',
+    '#ffff00',
+    '#008000',
+    '#0000ff',
+    '#4b0082',
+    '#ffa500',
+    '#ffffff',
+    '#808080',
+    '#000000'
+]
 
 
 async function main() {
+  const matic = 'https://polygon-mumbai.g.alchemy.com/v2/ZqdKZSzvX0972EJp7NzoRgdzW5dbGTi6'
+  const provider = new ethers.providers.JsonRpcProvider(matic)
 
-  const provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545') //'https://localhost:8545')
-  // const provider =  new ethers.providers.JsonRpcProvider('https://eth-rinkeby.alchemyapi.io/v2/cx7UBVYb9gv8JUNChwO8ERbDzANrorsy');
-  // TODO: move provider link into environmental variable
-
-  // 1. Listen to event (ie. every 100 changes) and trigger all
-  // const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
-  // const signer = ethers.Wallet.createRandom().connect(provider)
-  const signer = new ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80").connect(provider);
-
-  console.log(signer.getAddress())
-  const connectedCanvas = new ethers.Contract(
-    canvas_address,     
+  const Canvas = new ethers.Contract(
+    CANVAS_ADDR,
     CANVAS_ABI.abi, 
-    signer);
-
-  // connectedCanvas.on("Image", async () => {
-
-  // 2. LOAD IMAGE
-  // TODO: potentially use Tatum / Graph for this?)
-
-  const CanvasContract = new ethers.Contract(
-    canvas_address,
-    CANVAS_ABI.abi,
     provider
   )
 
-  const pixel_array = await CanvasContract.pixels()
+  // connectedCanvas.on("Image", async () => {
+    const pixels = await Canvas.pixels()
+    console.log('pixels loaded')
 
-  console.log('pixels loaded')
+    let destArray = []
+    let tempArray = []
+    pixels.forEach((item, i) => {
+      if (i === 0) {
+        tempArray.push(Jimp.cssColorToHex(TABLE[item.val]));
 
-  destArray = []
-  tempArray = []
-
-  pixel_array.forEach((item, i) => {
-    if (i === 0) {
+      } else if (i % 10 === 0) {
+        destArray.push(tempArray);
+        tempArray = [];
+        tempArray.push(Jimp.cssColorToHex(TABLE[item.val]));
+      } else {
       tempArray.push(Jimp.cssColorToHex(TABLE[item.val]));
-      
-    } else if (i % 10 === 0) {
-      destArray.push(tempArray);
-      tempArray = [];
-      tempArray.push(Jimp.cssColorToHex(TABLE[item.val]));
-    } else {
-    tempArray.push(Jimp.cssColorToHex(TABLE[item.val]));
-    }
-    
-    if (i === pixel_array.length - 1) {
-      destArray.push(tempArray);
-    }
-  })  
+      }
 
-  console.log('generating image')
+      if (i === pixels.length - 1) {
+        destArray.push(tempArray);
+      }
+    })
 
-  // 3. generate a png and save locally
+    console.log('generating image')
     let image = new Jimp(10, 10)
-
     destArray.forEach((row, y) => {
       row.forEach((color, x) => {
         image.setPixelColor(color, x, y);
-      });
-    });
-
+      })
+    })
     await image.writeAsync('images/nft.png')
 
-
-  // 4. Send image to IPFS
-  // TODO: consider adding the tatum request
-
-    console.log('sending to IPFS')
-
-    const path = "./images/nft.png"
-    const token = process.env.WEB3_STORAGE_API_KEY
-
-    console.log("token is", token)
-
+    const token = process.env.WEB3_STORAGE_KEY
     const storage = new Web3Storage({ token })
-    const files = []  
 
-    pathFiles = await getFilesFromPath(path)
-    files.push(...pathFiles)
+    console.log('Uploading PNG')
+    const png = await storage.put(await getFilesFromPath('images/nft.png'))
+    console.log('PNG CID:', png)
 
-    console.log(`Uploading ${files.length} NFT images`)
-    const cid = await storage.put(files)
-    console.log('NFT image added with CID:', cid)
-    
-    // 5. Create JSON metadata for NFT and upload to IPFS
-    image_metadata = `{
-      "name": "dAPPlace NFT collection (dapplace.xyz)",
-      "description": "decentralised collaboration artwork",
-      "image": "https://${cid}.ipfs.dweb.link/nft.png"
-    }`
+    console.log('Uploading metadata')
+    const metadata = JSON.stringify({
+      name: 'dAPPlace NFT collection (dapplace.xyz)',
+      description: 'decentralised collaboration artwork',
+      image: `https://${png}.ipfs.dweb.link/nft.png`
+    })
+    fs.writeFileSync('images/metadata.json', metadata)
+    const met = await storage.put(await getFilesFromPath('images/metadata.json'))
+    console.log('Metadata CID:', met)
 
-    fs.writeFile("./images/NFT_metadata.json", image_metadata, function(err) {
-        if (err) {
-            console.log(err);
-        }
-    });
+    const uri = `https://${met}.ipfs.dweb.link/metadata.json`
+    console.log(uri)
 
-    const json_path = "./images/NFT_metadata.json"
-    const json_storage = new Web3Storage({ token })
-    const json_file = []  
+    const url = 'https://api-eu1.tatum.io/v3/nft/mint'
+    const headers = {
+      'X-Api-Key': process.env.TATUM_KEY,
+      'Content-Type': 'application/json'
+    }
+    const body = {
+      url: uri,
+      chain: 'MATIC',
+      to: '0x26b19ab85180874E118Cf949bAc3a801cc574B3c'
+    }
 
-    json_pathFiles = await getFilesFromPath(json_path)
-    json_file.push(...json_pathFiles)
-
-    console.log(`Uploading ${json_file.length} JSON files`)
-    const json_cid = await json_storage.put(json_file)
-    console.log('JSON metadata added with CID:', json_cid)
-
-    json_URI = `https://${json_cid}.ipfs.dweb.link/NFT_metadata.json`
-
-
-  // 6. modify NFT image address
-  const NFT_Contract = new ethers.Contract(
-    NFT_contract_address,     
-    NFT_ABI.abi, 
-    signer);
-
-    console.log("changing the IPFS URI...")
-
-    await NFT_Contract.setIpfsUri(json_URI)//, {gasLimit:1000000, gasPrice:100000000000})
-     
-
-  // 7. settle and create auction
-  const Auction_Contract = new ethers.Contract(
-    auction_address,     
-    AUCTION_ABI.abi, 
-    signer);
-
-    await Auction_Contract.createBid({value:ethers.utils.parseEther("1"), gasPrice:10000000000, gasLimit:30000000, from:signer.getAddress()})
-
-    
-
-    await Auction_Contract.settleCurrentAndCreateNewAuction()
-
-  // })
+    const res = await axios.post(url, body, { headers })
+    console.log(res.data)
 }
-
 
 main()

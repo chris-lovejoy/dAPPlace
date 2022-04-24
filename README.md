@@ -1,6 +1,6 @@
 # dAPPlace
 
-dAPPlace.xyz is a decentralised, collaborate, infinite game using web3 technology.
+dAPPlace.xyz is a decentralised, collaborate, infinite social art game using web3 technology.
 
 
 [![build](https://github.com/meyer1994/ipgit/actions/workflows/build.yml/badge.svg)](https://github.com/meyer1994/ipgit/actions/workflows/build.yml)

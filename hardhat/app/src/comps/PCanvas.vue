@@ -41,7 +41,7 @@ const dynamicClass = 'super-class'
       <template v-for="(_, x) in SIZE" :key="x">
         <PPixel
           :color="grid[(y * SIZE) + x].val" @click="click(x, y)"
-          :acc="test"
+          :account="`${grid[(y * SIZE) + x].acc}`"
         />
       </template>
     </div>

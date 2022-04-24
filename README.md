@@ -1,5 +1,8 @@
 # dAPPlace
 
+dAPPlace.xyz is a decentralised, collaborate, infinite game in web3.
+
+
 [![build](https://github.com/meyer1994/ipgit/actions/workflows/build.yml/badge.svg)](https://github.com/meyer1994/ipgit/actions/workflows/build.yml)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
@@ -8,17 +11,13 @@
 
 - [About](#about)
 - [Install](#install)
+- [Gameplay](#gameplay)
 - [Team](#thanks)
 
 
 ## About
 
-dAPPlace.xyz is a decentralised, collaborate, infinite game.
-
-Players place pixels to build a collective masterpiece.
-
-Every 100 edits, an NFT is minted and awarded to the highest bidder.
-
+dAPPlace is a canvas for art battles where people can place one colored pixel at a time. An NFT of the current canvas is minted after every 100 changes to the canvas. In parallel, people bid to own the NFT while it’s being created.
 
 
 ## Install
@@ -52,6 +51,9 @@ npm run build
 npm run lint
 ```
 
+## About
+![](./hardhat/Website-screenshot.png)
+
 
 ## Team
 This project was a collaborative effort between:
@@ -60,4 +62,3 @@ This project was a collaborative effort between:
 - Ali Rizvi
 - Ignacio Pastor
 - Dave Brewer
-

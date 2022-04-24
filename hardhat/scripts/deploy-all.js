@@ -13,12 +13,12 @@ async function main() {
 
 // We get the contract to deploy
   const AuctionContract = await hre.ethers.getContractFactory("dAPPplaceHouse");
-  const Auction = await AuctionContract.deploy();
+  const Auction = await AuctionContract.deploy(ethers.utils.parseEther("0.5", 5));
 
   await Auction.deployed();
 
   console.log("Auction House deployed to:", Auction.address);
-  
+
 
   let auctionContract= Auction.address
 // We get the contract to deploy

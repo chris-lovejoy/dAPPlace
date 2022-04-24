@@ -35,6 +35,10 @@ useIntervalFn(nextMintCount, 1000)
 
 <template>
   <div class="next-mint-countdown">{{count}} pixels until next mint</div>
+  <div class="bidding-holder">
+    <div>Current bid:<br/> 0.075 ETH</div>
+    <button class="bid-button">Increase bid</button>
+  </div>
   <div class="wrapper">
     <div :class="{[color]: true}">
       <PCanvas :value="value" />
@@ -85,12 +89,34 @@ useIntervalFn(nextMintCount, 1000)
     align-items: center;
   }
 
-  button {
-    color: rgb(59 130 246);
-    background-color: white;
+  .bidding-holder {
+    border: 1px solid black;
+    top: 10px;
+    right: 10px;
+    width: 130px;
+    text-align: center;
+    position: absolute;
+    padding: 10px 10px 20px;
+    z-index: 4;
+    background: white;
+  }
+
+  .bid-button {
+    color: black;
     border: none;
     border-radius: 5px;
     padding: 6px 8px;
+    cursor: pointer;
+    top: 10px;
+    right: 10px;
+    background: #ccc;
+    font-family: monospace;
+    border-radius: 0;
+    margin-top: 10px;
+  }
+
+  .bid-button:hover {
+
   }
 
   .selected-color {

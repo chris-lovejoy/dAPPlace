@@ -174,16 +174,16 @@ contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
         auction.settled = true;
 
         if (_auction.bidder == address(0)) {
-            nft.mintNft(projectAddress);
+            _mintNft(projectAddress);
         } else {
-            nft.mintNft(_auction.bidder);
+            _mintNft(_auction.bidder);
         }
 
         if (_auction.amount > 0) {
             _safeTransferETH(projectAddress, _auction.amount);
         }
 
-        _tokenId.increment()
+        _tokenId.increment();
 
         emit AuctionSettled(_auction.tokenId, _auction.bidder, _auction.amount);
     }

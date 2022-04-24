@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
 
-    Dusing Counters for Counters.Counter;
+    using Counters for Counters.Counter;
 
     Counters.Counter private _tokenId;
 

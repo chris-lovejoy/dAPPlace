@@ -26,7 +26,9 @@ async function main() {
   // TODO: move provider link into environmental variable
 
   // 1. Listen to event (ie. every 100 changes) and trigger all
-  const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
+  //const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
+  const signer = ethers.getSigners()[0]
+  console.log(signer.getAddress())
   const connectedCanvas = new ethers.Contract(
     canvas_address,     
     CANVAS_ABI.abi, 

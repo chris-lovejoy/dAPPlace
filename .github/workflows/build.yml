@@ -32,3 +32,10 @@ jobs:
           folder: ./hardhat/app/dist
           single-commit: true
           silent: false
+
+      - uses: web3-storage/add-to-web3@v2
+        with:
+          web3_token: ${{ secrets.WEB3_STORAGE_KEY }}
+          path_to_add: ./hardhat/app/dist
+      - run: echo ${{ steps.web3.outputs.cid }}
+      - run: echo ${{ steps.web3.outputs.url }}

@@ -12,8 +12,8 @@ const { Web3Storage, getFilesFromPath } = require('web3.storage')
 
 
 // to update to addresses based on contract deployment
-const canvas_address = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
-const NFT_contract_address = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+const canvas_address = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"
+const NFT_contract_address = "0x0165878A594ca255338adfa4d48449f69242Eb8F"
 
 
 const TABLE = ['#dddddd', '#ff0000', '#ffA500', '#ffff00', '#008000', '#0000ff', '#4b0082', '#ffa500', '#ffffff', '#808080', '#000000']
@@ -26,8 +26,10 @@ async function main() {
   // TODO: move provider link into environmental variable
 
   // 1. Listen to event (ie. every 100 changes) and trigger all
-  //const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
-  const signer = ethers.getSigners()[0]
+  // const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
+  // const signer = ethers.Wallet.createRandom().connect(provider)
+  const signer = new ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80").connect(provider);
+
   console.log(signer.getAddress())
   const connectedCanvas = new ethers.Contract(
     canvas_address,     
@@ -138,10 +140,11 @@ async function main() {
 
     console.log("changing the IPFS URI...")
 
-    // NFT_Contract.setIpfsUri(json_URI, {gasLimit:1000000, gasPrice:100000000000})
+    NFT_Contract.setIpfsUri(json_URI)//, {gasLimit:1000000, gasPrice:100000000000})
     
 
-  // 6. settle auction
+
+
   })
 }
 

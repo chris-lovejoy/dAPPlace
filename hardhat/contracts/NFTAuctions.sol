@@ -6,11 +6,14 @@ import { Pausable } from '@openzeppelin/contracts/security/Pausable.sol';
 import { ReentrancyGuard } from '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "./DappPlaceNFT.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 
 contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
 
-    DapplaceNFT public nft;
+    Dusing Counters for Counters.Counter;
+
+    Counters.Counter private _tokenId;
 
     // The minimum price accepted in an auction
     uint256 public reservePrice;
@@ -50,6 +53,8 @@ contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
     constructor(uint256 _reservePrice, uint8 _minBidIncrementPercentage){
         reservePrice = _reservePrice;
         minBidIncrementPercentage = _minBidIncrementPercentage;
+        _tokenId.increment();
+        
     }
 
     /**
@@ -65,7 +70,8 @@ contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
      * @dev This contract only accepts payment in ETH.
      */
     function createBid() external payable nonReentrant {
-        uint256 currentTokenId = nft.tokenId();
+       
+        uint256 currentTokenId = _tokenId.current();
 
         Auction memory _auction = auction;
 
@@ -144,8 +150,8 @@ contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
      * catch the revert and pause this contract.
      */
     function _createAuction() internal {
-
-            uint256 currentTokenId = nft.tokenId();
+            
+            uint256 currentTokenId = _tokenId.current();
             auction = Auction({
                 tokenId: currentTokenId,
                 amount: 0,
@@ -176,6 +182,8 @@ contract dAPPplaceHouse is Pausable, ReentrancyGuard, Ownable {
         if (_auction.amount > 0) {
             _safeTransferETH(projectAddress, _auction.amount);
         }
+
+        _tokenId.increment()
 
         emit AuctionSettled(_auction.tokenId, _auction.bidder, _auction.amount);
     }

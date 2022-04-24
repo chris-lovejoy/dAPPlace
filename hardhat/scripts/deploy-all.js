@@ -11,7 +11,7 @@ async function main() {
   console.log("Canvas deployed to:", Canvas.address);
 
 
-// We get the contract to deploy
+// // We get the contract to deploy
   const AuctionContract = await hre.ethers.getContractFactory("dAPPplaceHouse");
   const Auction = await AuctionContract.deploy(ethers.utils.parseEther("0.5"), 5);
 
@@ -28,6 +28,8 @@ async function main() {
   await dAPPNft.deployed();
 
   console.log("dAPPNft deployed to:", dAPPNft.address);
+
+
 }
 
 

@@ -39,7 +39,10 @@ const dynamicClass = 'super-class'
   <main :class="dynamicClass">
     <div class="row" v-for="(_, y) in SIZE" :key="y">
       <template v-for="(_, x) in SIZE" :key="x">
-        <PPixel :color="grid[(y * SIZE) + x].val" @click="click(x, y)" />
+        <PPixel
+          :color="grid[(y * SIZE) + x].val" @click="click(x, y)"
+          :acc="test"
+        />
       </template>
     </div>
   </main>

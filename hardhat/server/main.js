@@ -36,7 +36,7 @@ async function main() {
     provider
   )
 
-  // connectedCanvas.on("Image", async () => {
+  Canvas.on("Image", async () => {
     const pixels = await Canvas.pixels()
     console.log('pixels loaded')
 
@@ -101,6 +101,7 @@ async function main() {
 
     const res = await axios.post(url, body, { headers })
     console.log(res.data)
+  })
 }
 
 main()

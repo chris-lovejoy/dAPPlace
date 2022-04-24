@@ -3,7 +3,7 @@ import { onMounted, ref, computed } from 'vue'
 
 import { useIntervalFn } from '@vueuse/core'
 
-import { Canvas } from '@/contracts'
+import { Canvas, contractId } from '@/contracts'
 
 import PCanvas from '@/comps/PCanvas'
 import PPicker from '@/comps/PPicker'
@@ -41,7 +41,7 @@ useIntervalFn(nextMintCount, 1000)
       <PPicker v-model="color" />
     </div>
   </div>
-  <div class="smart-contract-address">Contract address: <a target="_blank" href="https://mumbai.polygonscan.com/address/0xAAc0a62E090145330fce78771d699999Fa64654D">0xAAc0a62E090145330fce78771d699999Fa64654D</a></div>
+  <div class="smart-contract-address">Contract address: <a target="_blank" :href="`https://mumbai.polygonscan.com/address/${contractId}`">{{contractId}}</a></div>
 </template>
 
 <style>

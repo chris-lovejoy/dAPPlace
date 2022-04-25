@@ -4,13 +4,12 @@ import { createApp } from 'vue'
 import App from '@/App'
 import { installEthers } from '@/plugin'
 
-const main = async () => {
+const main = () => {
   const provider = new ethers.providers.Web3Provider(window.ethereum)
-  await provider.send('eth_requestAccounts', [])
 
-  createApp(App)
+  createApp(App, { provider: provider })
     .use(installEthers, provider)
-    .mount('#app')
+    .mount('#daaplace')
 }
 
 main()

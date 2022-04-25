@@ -2,50 +2,79 @@
 import { onMounted, ref, computed } from 'vue'
 
 import { useIntervalFn } from '@vueuse/core'
-
 import { Canvas, contractId } from '@/contracts'
-
 import PCanvas from '@/comps/PCanvas'
 import PPicker from '@/comps/PPicker'
+import { colorMapper, formatToShortAddress } from '@/helpers'
 
+// ref variables
 const color = ref('green')
-const value = computed(() => {
-  const TABLE = {
-    transparent: 0,
-    red: 1,
-    orange: 2,
-    yellow: 3,
-    green: 4,
-    blue: 5,
-    indigo: 6,
-    violet: 7,
-    white: 8,
-    grey: 9,
-    black: 10
-  }
-  return TABLE[color.value]
-})
-
 const count = ref('..')
+const address = ref('')
+
+const hasMetamask = !!window.ethereum
+
+// color
+const value = computed(() => colorMapper[color.value])
+
+// count
 const nextMintCount = async () => (count.value = await Canvas.remaining())
 onMounted(nextMintCount)
 useIntervalFn(nextMintCount, 1000)
 
+// address
+const getAddress = async (_method) => {
+  const accounts = await window.ethereum.request({ method: _method })
+
+  if (accounts.length > 0) {
+    address.value = formatToShortAddress(accounts[0])
+    onMounted(address)
+  }
+}
+
+if (hasMetamask) {
+  getAddress('eth_accounts')
+} else {
+  console.log('Metamask not supported')
+}
+
+// connect to metamask
+const connectToWallet = () => {
+  getAddress('eth_requestAccounts')
+}
+
 </script>
 
 <template>
-  <div class="next-mint-countdown">{{count}} pixels until next mint</div>
-  <div class="bidding-holder">
-    <div>Current bid:<br/> 0.075 ETH</div>
-    <button class="bid-button">Increase bid</button>
-  </div>
-  <div class="wrapper">
-    <div :class="{[color]: true}">
-      <PCanvas :value="value" />
-      <PPicker v-model="color" />
+  <div>
+    <header>
+      <div class="wallet">
+        <p v-if="address" class="address">{{address}}</p>
+        <button v-else @click="connectToWallet()" class="connect-wallet-btn">Connect Wallet</button>
+      </div>
+
+      <a title="Bidding offline" class="bidding-holder bidding-holder--offline">
+        <div>Current bid:<br/> 0.075 ETH</div>
+        <button disabled class="bid-button">Increase bid</button>
+      </a>
+    </header>
+
+    <div class="next-mint-countdown">{{count}} changes until next NFT mint</div>
+
+    <div class="artboard">
+      <div :class="{[color]: true}">
+        <PCanvas :value="value" />
+        <PPicker v-model="color" />
+      </div>
+    </div>
+
+    <div class="contract">
+      Contract address:
+      <a target="_blank" :href="`https://mumbai.polygonscan.com/address/${contractId}`">
+        {{contractId}}
+      </a>
     </div>
   </div>
-  <div class="smart-contract-address">Contract address: <a target="_blank" :href="`https://mumbai.polygonscan.com/address/${contractId}`">{{contractId}}</a></div>
 </template>
 
 <style>
@@ -55,12 +84,52 @@ useIntervalFn(nextMintCount, 1000)
     background-color: #fff;
   }
 
-  .next-mint-countdown {
-    text-align: center;
-    margin-top: 12px;
+  header {
+    display:flex;
+    justify-content:space-between;
   }
 
-  .smart-contract-address {
+  header .wallet .address,
+  header .bidding-holder,
+  header .connect-wallet-btn {
+    margin-left: 15px;
+    background: #ddd;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  header .connect-wallet-btn {
+    border: none;
+    margin-top: 1em;
+    cursor: pointer;
+    font-family: monospace;
+  }
+
+  header .bidding-holder {
+    margin-top: 1em;
+    margin-right: 1em;
+  }
+
+  header .bidding-holder--offline {
+    color: rgba(0,0,0,0.5);
+  }
+
+  header .bidding-holder--offline button:disabled {
+    color: rgba(0,0,0,0.5);
+    cursor: default;
+  }
+
+  .next-mint-countdown {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    margin-top: 12px;
+    padding-top: 10px;
+    z-index: -1;
+  }
+
+  .contract {
     text-align: center;
     margin-top: 12px;
     position: absolute;
@@ -68,7 +137,7 @@ useIntervalFn(nextMintCount, 1000)
     width: 100%;
   }
 
-  .wrapper {
+  .artboard {
     width: 200px;
     height: 250px;
 
@@ -76,29 +145,6 @@ useIntervalFn(nextMintCount, 1000)
     top: 50%;
     left:50%;
     margin: -125px 0 0 -100px;
-  }
-
-  header {
-    display:flex;
-    justify-content: space-between;
-    background: rgb(59 130 246);
-    padding: 15px 15px 15px 15px;
-    margin-bottom: 30px;
-    color: #fff;
-    font-size: 16px;
-    align-items: center;
-  }
-
-  .bidding-holder {
-    border: 1px solid black;
-    top: 10px;
-    right: 10px;
-    width: 130px;
-    text-align: center;
-    position: absolute;
-    padding: 10px 10px 20px;
-    z-index: 4;
-    background: white;
   }
 
   .bid-button {

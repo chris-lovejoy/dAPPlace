@@ -12,7 +12,7 @@ dAPPlace.xyz is a decentralised, collaborate, infinite social art game using web
 - [About](#about)
 - [Install](#install)
 - [Gameplay](#gameplay)
-- [Team](#thanks)
+- [Team and Context](#team-and-context)
 
 
 ## About
@@ -56,10 +56,12 @@ npm run lint
 ![](./hardhat/Website-screenshot.png)
 
 
-## Team
+## Team and Context
 This project was a collaborative effort between:
 - Jaoa Meyer
 - Chris Lovejoy
 - Ali Rizvi
 - Ignacio Pastor
 - Dave Brewer
+
+This game was initially built as part of the [ETH Amsterdam Hackathon 2022](https://amsterdam.ethglobal.com/index.html) and received prizes from TATUM and IPFS/Filecoin.
